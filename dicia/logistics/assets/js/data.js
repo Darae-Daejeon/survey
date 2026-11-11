@@ -4,13 +4,13 @@
    ========================================================= */
 window.SURVEY = {
   /* 구글 Apps Script 웹 앱 주소 (비워 두면 시험 모드: 저장·메일 없이 화면만 동작) */
-  endpoint: "",
+  endpoint: "https://script.google.com/macros/s/AKfycbyZHUQzZwRYSls5Zbbk8Wv8Tp5uEYgVoeWAK41FtANM17U9eZgjxPYcO_DASMv1k9Kx/exec",
 
   /* 구글 시트 탭 이름이자 메일 제목 구분값 */
   survey: "물류기업",
 
   /* 응답 마감 (한국 시간, 비워 두면 마감 없음) 예: "2026-12-05T18:00:00+09:00" */
-  deadline: "",
+  deadline: "2026-12-10T19:00:00+09:00",
 
   title: "지역 물류산업 AX 수요조사",
   audience: "물류기업용",
