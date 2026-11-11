@@ -231,14 +231,14 @@
     var h = '<section class="page" data-step="' + (idx + 1) + '">' +
       '<header class="sec"><div class="sec__key">' + sec.key + '</div>' +
       '<h2 class="sec__title">' + esc(sec.title) + "</h2>" +
-      (sec.lead ? '<p class="sec__lead">' + esc(sec.lead) + "</p>" : "") +
-      (sec.note ? '<p class="sec__note">' + esc(sec.note) + "</p>" : "") + "</header>";
+      (sec.lead || sec.note ? '<p class="sec__lead">' + esc(sec.lead || "") + (sec.note ? ' <span class="sec__hl">' + esc(sec.note) + "</span>" : "") + "</p>" : "") +
+      "</header><div class=\"qgrid\">";
     sec.questions.forEach(function (q, qi) {
       var inputType = q.type === "single" ? "radio" : "checkbox";
-      h += '<fieldset class="q" id="q_' + q.id + '" data-q="' + q.id + '" style="border:0;margin:0;min-width:0">' +
+      h += '<fieldset class="q' + (q.half ? " q--half" : "") + '" id="q_' + q.id + '" data-q="' + q.id + '" style="border:0;margin:0;min-width:0">' +
         '<legend class="q__head" style="padding:0;float:left;width:100%"><span class="q__no">' + sec.key + "-" + (qi + 1) + "</span>" +
         '<span class="q__title">' + esc(q.title) + '<span class="q__rule">' + ruleText(q) + "</span></span></legend>" +
-        '<div class="opts' + (q.tech ? " opts--tech" : "") + (q.type === "single" && q.options.length <= 3 && !q.options.some(function (o) { return o.etc; }) ? " opts--row opts--" + q.options.length : "") + '" style="clear:both">';
+        '<div class="opts' + (q.tech ? " opts--tech" : "") + (!q.tech && !q.options.some(function (o) { return o.desc; }) ? " opts--short" : "") + (q.type === "single" && q.options.length <= 3 && !q.options.some(function (o) { return o.etc; }) ? " opts--row opts--" + q.options.length : "") + '" style="clear:both">';
       var n = 0;
       q.options.forEach(function (o, oi) {
         var cls = "opt opt--" + (q.type === "single" ? "single" : "multi") + (o.none ? " opt--none" : "") + (o.etc ? " opt--etc" : "") + (q.tech && !o.none ? " opt--tech" : "");
@@ -246,13 +246,13 @@
         h += '<label class="' + cls + '" data-v="' + esc(label) + '">' +
           '<input type="' + inputType + '" name="' + q.id + '" value="' + esc(label) + '"' + (o.none ? ' data-none="1"' : "") + (o.etc ? ' data-etc="1"' : "") + ">";
         if (q.tech && !o.none) {
-          h += '<span class="opt__ico"><svg viewBox="0 0 24 24" aria-hidden="true">' + (ICON[o.icon] || "") + "</svg></span>" +
-            '<span class="opt__txt"><span class="opt__label"><span class="opt__num">' + NUM[n - 1] + '</span> ' + esc(o.label) + "</span>" +
+          h += '<span class="opt__txt"><span class="opt__label"><span class="opt__ico"><svg viewBox="0 0 24 24" aria-hidden="true">' + (ICON[o.icon] || "") + "</svg></span>" +
+            '<span class="opt__num">' + NUM[n - 1] + '</span> ' + esc(o.label) + "</span>" +
             '<span class="opt__desc">' + esc(o.desc || "") + "</span></span>" +
             '<span class="opt__box">' + CHECK + "</span>";
         } else {
           h += '<span class="opt__box">' + CHECK + "</span>" +
-            '<span class="opt__txt"><span class="opt__label">' + esc(o.etc ? o.label + " (직접 입력)" : o.label) + "</span>" +
+            '<span class="opt__txt"><span class="opt__label">' + esc(o.label) + "</span>" +
             (o.desc ? '<span class="opt__desc">' + esc(o.desc) + "</span>" : "") + "</span>";
           if (o.etc) h += '<span class="opt__etc"><input class="input input--sm" type="text" data-etc-for="' + q.id + '" maxlength="100" placeholder="내용을 입력해 주십시오" aria-label="' + esc(q.short) + ' 기타 내용"></span>';
         }
@@ -260,7 +260,7 @@
       });
       h += '</div><p class="q__err" role="alert"></p></fieldset>';
     });
-    return h + "</section>";
+    return h + "</div></section>";
   }
 
   var pageHTML = [pageInfo()].concat(S.sections.map(pageSection));
