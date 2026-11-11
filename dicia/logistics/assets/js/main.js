@@ -137,7 +137,7 @@
         ctx.beginPath(); ctx.arc(h.x, h.y, 9, 0, 6.283); ctx.stroke();
         ctx.fillStyle = "#ffb547";
         ctx.beginPath(); ctx.arc(h.x, h.y, 3.2, 0, 6.283); ctx.fill();
-        ctx.font = "600 " + Math.round(11 * (opt.scale || 1)) + "px " + getComputedStyle(document.body).fontFamily;
+        ctx.font = "600 " + Math.round(13 * (opt.scale || 1)) + "px " + getComputedStyle(document.body).fontFamily;
         ctx.fillStyle = "rgba(220,228,240,.55)";
         ctx.fillText(h.name + " HUB " + String(idx + 1).padStart(2, "0"), h.x + 14, h.y + 4);
       });
