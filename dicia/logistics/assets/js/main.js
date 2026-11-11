@@ -30,8 +30,7 @@
     opt = opt || {};
     var ctx = canvas.getContext("2d"), dpr = 1, W = 0, H = 0;
     var nodes = [], edges = [], cars = [], hubs = [], raf = 0, running = false;
-    var NAMES = ["유성", "대덕", "둔산", "신탄진", "대화", "관저", "판암", "원신흥", "문평", "평촌"];
-
+    
     function build() {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       W = canvas.clientWidth; H = canvas.clientHeight;
@@ -64,7 +63,7 @@
       var hubN = Math.max(4, Math.min(10, Math.round(W * H / (220000 * (opt.scale || 1) * (opt.scale || 1)))));
       for (var i = 0; i < cand.length && hubs.length < hubN; i++) {
         var ok = hubs.every(function (h) { return Math.hypot(h.x - cand[i].x, h.y - cand[i].y) > gap * 2.6; });
-        if (ok) { cand[i].hub = true; cand[i].name = NAMES[hubs.length % NAMES.length]; hubs.push(cand[i]); }
+        if (ok) { cand[i].hub = true; hubs.push(cand[i]); }
       }
       var carN = Math.round(Math.min(170, Math.max(24, W * H / (15000 * (opt.scale || 1) * (opt.scale || 1)))));
       for (i = 0; i < carN; i++) spawn(true);
@@ -137,9 +136,6 @@
         ctx.beginPath(); ctx.arc(h.x, h.y, 9, 0, 6.283); ctx.stroke();
         ctx.fillStyle = "#ffb547";
         ctx.beginPath(); ctx.arc(h.x, h.y, 3.2, 0, 6.283); ctx.fill();
-        ctx.font = "600 " + Math.round(13 * (opt.scale || 1)) + "px " + getComputedStyle(document.body).fontFamily;
-        ctx.fillStyle = "rgba(220,228,240,.55)";
-        ctx.fillText(h.name + " HUB " + String(idx + 1).padStart(2, "0"), h.x + 14, h.y + 4);
       });
     }
 
