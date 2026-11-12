@@ -53,6 +53,7 @@ svg { display: block; }
     var(--s3);
   box-shadow: inset 0 0 0 1px var(--line2);
 }
+.brand-ci { display: block; height: clamp(26px, 3.6vh, 36px); width: auto; }
 .chip { display: inline-flex; align-items: center; gap: 6px; height: 38px; padding: 0 16px; border-radius: var(--pill); font-size: 15px; font-weight: 500; }
 .chip--line { border: 1px solid var(--line2); color: var(--mute); background: rgba(7, 9, 13, .5); backdrop-filter: blur(8px); }
 
@@ -311,6 +312,7 @@ svg { display: block; }
   .intro__meta li { min-width: 0; padding-right: 12px; }
   .intro__meta li + li { padding-left: 14px; }
   .intro__meta strong { font-size: 28px; }
+  .brand-ci { height: 24px; }
   .intro__title { font-size: clamp(30px, 8.6vw, 40px); }
   .eyebrow { font-size: 13px; letter-spacing: .1em; }
   .intro__cta .btn { width: 100%; }

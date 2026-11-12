@@ -11,7 +11,6 @@
 
   /* ---------------- 고정 문구 채우기 ---------------- */
   var qCount = S.sections.reduce(function (n, s) { return n + s.questions.length; }, 0);
-  $("brandHost").textContent = S.host;
   $("audienceChip").textContent = S.audience;
   $("introLead").innerHTML = S.intro.map(function (t) { return "<p>" + esc(t) + "</p>"; }).join("");
   $("metaMin").textContent = S.minutes + "분";
