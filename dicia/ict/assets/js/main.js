@@ -232,7 +232,8 @@
     var h = '<section class="page" data-step="' + (idx + 1) + '">' +
       '<header class="sec"><div class="sec__key">' + sec.key + '</div>' +
       '<h2 class="sec__title">' + esc(sec.title) + "</h2>" +
-      (sec.lead || sec.note ? '<p class="sec__lead">' + esc(sec.lead || "") + (sec.note ? ' <span class="sec__hl">' + esc(sec.note) + "</span>" : "") + "</p>" : "") +
+      (sec.lead ? '<p class="sec__lead">' + esc(sec.lead) + "</p>" : "") +
+        (sec.note ? '<p class="sec__lead sec__note">' + esc(sec.note) + "</p>" : "") +
       "</header><div class=\"qgrid\">";
     sec.questions.forEach(function (q, qi) {
       var inputType = q.type === "single" ? "radio" : "checkbox";

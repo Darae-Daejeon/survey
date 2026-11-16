@@ -338,3 +338,4 @@ svg { display: block; }
 .textarea { display: block; height: auto; min-height: 140px; padding: 16px 18px; line-height: 1.6; resize: vertical; }
 .opts--short { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
 .eyebrow { letter-spacing: .04em; }
+.sec__note { margin-top: 10px; font-weight: 700; color: var(--accent); }
