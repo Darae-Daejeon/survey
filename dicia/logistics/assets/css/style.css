@@ -332,3 +332,7 @@ svg { display: block; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-delay: 0s !important; transition-duration: .001ms !important; }
 }
+
+/* ---------- 서술형 문항 ---------- */
+.q__help { margin: 0 0 12px; font-size: 17px; color: var(--mute); }
+.textarea { display: block; height: auto; min-height: 140px; padding: 16px 18px; line-height: 1.6; resize: vertical; }

@@ -189,6 +189,7 @@
   }).join("");
 
   function ruleText(q) {
+    if (q.type === "text") return q.required === false ? "서술형 · 선택" : "서술형";
     if (q.type === "single") return "1개 선택";
     if (q.max) return "최대 " + q.max + "개";
     return "복수 선택";
@@ -233,6 +234,13 @@
       h += '<fieldset class="q' + (q.half ? " q--half" : "") + '" id="q_' + q.id + '" data-q="' + q.id + '" style="border:0;margin:0;min-width:0">' +
         '<legend class="q__head" style="padding:0;float:left;width:100%"><span class="q__no">' + sec.key + "-" + (qi + 1) + "</span>" +
         '<span class="q__title">' + esc(q.title) + '<span class="q__rule">' + ruleText(q) + "</span></span></legend>" +
+        (q.help ? '<p class="q__help" style="clear:both">' + esc(q.help) + "</p>" : "");
+      if (q.type === "text") {
+        h += '<textarea class="input textarea" data-text-for="' + q.id + '" rows="4" maxlength="1000" style="clear:both" placeholder="' + esc(q.placeholder || "") + '" aria-label="' + esc(q.short) + '"></textarea>' +
+          '<p class="q__err" role="alert"></p></fieldset>';
+        return;
+      }
+      h += '' +
         '<div class="opts' + (q.tech ? " opts--tech" : "") + (!q.tech && !q.options.some(function (o) { return o.desc; }) ? " opts--short" : "") + (q.type === "single" && q.options.length <= 3 && !q.options.some(function (o) { return o.etc; }) ? " opts--row opts--" + q.options.length : "") + '" style="clear:both">';
       var n = 0;
       q.options.forEach(function (o, oi) {
@@ -280,6 +288,7 @@
         var id = fs.dataset.q, sel = answers[id] || [];
         fs.querySelectorAll("input[name]").forEach(function (inp) { inp.checked = sel.indexOf(inp.value) > -1; });
         var et = fs.querySelector("[data-etc-for]"); if (et) et.value = etcText[id] || "";
+        var tx = fs.querySelector("[data-text-for]"); if (tx) { tx.value = (answers[id] || [])[0] || ""; return; }
         syncQ(fs);
       });
     }
@@ -314,7 +323,7 @@
       if (consent) $("consentBox").classList.remove("is-invalid");
       saveDraft(); return;
     }
-    if (!t.name || t.dataset.etcFor || !t.closest(".q")) return;
+    if (!t.name || t.dataset.etcFor || t.dataset.textFor || !t.closest(".q")) return;
     var fs = t.closest(".q"), q = findQ(t.name);
     var sel = (answers[q.id] || []).slice();
     if (q.type === "single") sel = [t.value];
@@ -339,7 +348,8 @@
   });
   pagesEl.addEventListener("input", function (e) {
     var t = e.target;
-    if (t.dataset.etcFor) { etcText[t.dataset.etcFor] = t.value; t.closest(".q").classList.remove("is-invalid"); }
+    if (t.dataset.textFor) { answers[t.dataset.textFor] = t.value.trim() ? [t.value] : []; t.closest(".q").classList.remove("is-invalid"); }
+    else if (t.dataset.etcFor) { etcText[t.dataset.etcFor] = t.value; t.closest(".q").classList.remove("is-invalid"); }
     else if (t.id && t.id.indexOf("f_") === 0) {
       var k = t.id.slice(2);
       if (k === "phone") { var p = fmtPhone(t.value); if (p !== t.value) t.value = p; }
@@ -376,7 +386,8 @@
     } else {
       S.sections[cur - 1].questions.forEach(function (q) {
         var fs = $("q_" + q.id), sel = answers[q.id] || [], msg = "";
-        if (!sel.length) msg = "응답을 선택해 주십시오.";
+        if (q.type === "text") { if (q.required !== false && !String(sel[0] || "").trim()) msg = "내용을 입력해 주십시오."; }
+        else if (!sel.length) msg = "응답을 선택해 주십시오.";
         else if (sel.some(function (v) { return isEtc(q, v); }) && !String(etcText[q.id] || "").trim()) msg = "기타 내용을 입력해 주십시오.";
         fs.dataset.hard = msg ? "1" : "";
         if (msg) { fs.querySelector(".q__err").textContent = msg; fs.classList.add("is-invalid"); if (!first) first = fs; }
@@ -436,6 +447,7 @@
 
   /* ---------------- 제출 ---------------- */
   function valueOf(q) {
+    if (q.type === "text") return String((answers[q.id] || [])[0] || "").trim();
     return (answers[q.id] || []).map(function (v) { return isEtc(q, v) ? v + "(" + String(etcText[q.id] || "").trim() + ")" : v; }).join(", ");
   }
   function buildPayload() {

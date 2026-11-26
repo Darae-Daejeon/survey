@@ -117,11 +117,13 @@ window.SURVEY = {
       ],
     },
     {
-      key: "D", title: "사업 안내",
+      key: "D", title: "사업 안내 및 의견",
       questions: [
         { id: "D1", short: "사업 안내 수신", title: "’27년 사업 공고·안내를 받으시겠습니까?", type: "single", options: [
           { label: "동의", desc: "작성자 정보의 E-mail로 안내" }, { label: "미동의" },
         ]},
+        { id: "D2", short: "자유 의견", title: "디지털·AI 기술로 해결하고 싶은 물류 현장의 애로나 ’27년 사업에 대한 의견을 자유롭게 작성해 주십시오.", type: "text", required: false,
+          placeholder: "예: 수기로 작성하는 배차표와 운송 일지를 자동으로 정리하고 싶음" },
       ],
     },
   ],
